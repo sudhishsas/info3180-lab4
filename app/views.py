@@ -6,7 +6,7 @@ This file creates your application.
 """
 import os
 from app import app
-from flask import render_template, request, redirect, url_for, flash, session, abort
+from flask import render_template, request, redirect, url_for, flash, session, abort,send_from_directory
 from werkzeug.utils import secure_filename
 from .forms import UploadForm
 
@@ -51,6 +51,18 @@ def upload():
     flash_errors(myform)
     return render_template('upload.html', form = myform)
 
+@app.route('/uploads/<filename>')
+def get_image(filename):
+    return send_from_directory(os.path.join(os.getcwd(),app.config['UPLOAD_FOLDER']), path=filename)
+
+@app.route('/files')
+def files():
+    if not session.get('logged_in'):
+        abort(401)
+    
+    filename = get_uploaded_images()
+    return render_template('files.html', filenames= filename )
+
 
 @app.route('/login', methods=['POST', 'GET'])
 def login():
@@ -77,6 +89,14 @@ def logout():
 ###
 # The functions below should be applicable to all Flask apps.
 ###
+def get_uploaded_images():
+    rootdir = os.getcwd()
+    file_store=[]
+    print("root directry:",rootdir)
+    for subdir, dirs, files in os.walk('./uploads'):
+        for file in files:
+            file_store.append(os.path.join(subdir, file))
+    return file_store
 
 # Flash errors from the form if validation fails
 def flash_errors(form):

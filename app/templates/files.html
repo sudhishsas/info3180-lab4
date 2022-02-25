@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block main %}
+<h1 class="page-header">View Images </h1>
+
+{% include 'flash_messages.html' %}
+<div class="container_image_view">
+    {% for file in filenames %}
+        <div class= "grid_view">
+                    <img src="{{ file }}"  alt="image from file" class = "grid_image" width="250" height="200">
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}
