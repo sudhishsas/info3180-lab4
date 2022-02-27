@@ -3,4 +3,4 @@ from flask_wtf.file import FileField, FileRequired, FileAllowed
 from wtforms import StringField
 
 class UploadForm(FlaskForm):
-    photo = FileField('Photo', validators=[FileRequired(),FileAllowed(['jpg', 'png', 'Images only!'])])
+    photo = FileField('Photo', validators=[FileRequired(),FileAllowed(['jpg', 'png'])])
